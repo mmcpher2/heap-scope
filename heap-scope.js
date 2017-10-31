@@ -43,34 +43,31 @@ the `gemHeapSkope` function.
         */
         return {
         "process": function (requestedGem) {
-            orderKiloCounter = 0
-            currentGemWeight = (GemMine[requestedGem].kilograms)
+
+            let currentGem = GemMine[requestedGem]
+            let currentGemWeight = (currentGem.kilograms)
+            let processedGemWeight = currentGemWeight
             
-            // for (let key in GemMine) {
-            //     const onyx = GemMine[key].kilograms
-            //     }
-        
             if (currentGemWeight > 5) {
-                currentGemWeight -= 5
-                orderKiloCounter = 5
-                }
+                processedGemWeight = 5
+            }
+            
+            GemMine[requestedGem].kilograms -= processedGemWeight
+
             /*
             Subtract 5 from the total kilograms available in
             the gem mine, but make sure you stop when there
             are no minerals left.
-            */
-            
-            if (currentGemWeight < 5 && currentGemWeight >= 0) { /* 5kg, or more, of the mineral remaining? */ 
-                
+            */                
             /*
             You can reference the `GemMine` variable here
             because it lives in an outer scope:
             e.g. GemMine[requestedMineral].kilograms
             */
-            }
+
             return {
             "mineral": requestedGem,
-            "amount": orderKiloCounter // Change this to the correct amount
+            "amount": processedGemWeight
             }
         }
     }
@@ -80,32 +77,103 @@ the `gemHeapSkope` function.
 The SkopeManager variable represents the object with the
 `process` method on it.
 */
+
 const SkopeManager = gemHeapSkope()
-const gemArray = ["Onyx", "Amethyst", "Bloodstone", "Emerald"]
-const mineGem = SkopeManager.process
-let orderKiloCounter = 0
-let currentGemWeight = 0
-const processedOrders = []
-let currentOrder = mineGem("Onyx")
-console.log(currentOrder)
-
-
-gemArray.forEach(function (gemName) {
-do {
-    processedOrders.push(currentOrder)
-    mineGem(gemName)
-} while (mineGem.amount > 0)
-})
 
 /*
 Process the gems in any order you like until there none
 left in the gem mine.
 */
 
+const processedGemDatabase = [
+    {
+        "gem" : "Onyx",
+        "processedGems" : []
+    },
+    {
+        "gem" : "Amethyst",
+        "processedGems" : []
+    },
+    {
+        "gem" : "Bloodstone",
+        "processedGems" : []
+    },
+    {
+        "gem" : "Emerald",
+        "processedGems" : []
+    }
+]
+
+processedGemDatabase.forEach(record => {
+    let mineral = record.gem
+    var currentResult;
+    do {
+        currentResult = SkopeManager.process(mineral)
+        
+    } while (currentResult.amount > 0)
+    
+    // while process for a specific mineral returns an 'amount' greater than zero, keep calling process 
+    // on that mineral
+
+});
+
+/*for (var i = 0; i < 30; i++) {
+    var container = {
+        id: i,
+        type: "Minerals",
+        orders: []
+    }
+    var containerTotal = 0
+    var shouldBreak = false
+    while (containerTotal < 565) {
+        if (currentGemIndex >= gemArray.length) {
+            shouldBreak = true
+            break
+        }
+        let result = SkopeManager.process(gemArray[currentGemIndex]);
+        if (result.amount < 5) {
+            currentGemIndex += 1;
+        } 
+        containerTotal += result.amount;
+        container.orders.push(result)
+    }
+    if (shouldBreak) {
+        break
+    }
+    containers.push(container);
+}
+console.log(containers);
+*/
+/*const processGems = function (gemToProcess) {
+    let processedGemArray = []
+    let processedGems = SkopeManager.process(gemToProcess)
+
+    do {
+        processedGemArray.push(processedGem)
+    } while (processedGems.amount > 0)
+
+    return processedGemArray
+}*/
+
+// const mineGem = SkopeManager.process
+// let currentOrder = mineGem("Onyx")
+
+// gemArray.forEach(function (gemName) {
+// do {
+//     processedOrders.push(currentOrder)
+//     mineGem(gemName)
+// } while (mineGem.amount > 0)
+// })
+
+
 /*
 Create a generator for 30 storage containers, which is how many a hëap-skope
 is equipped with.
 */
+
+const containerGenerator = function* () {
+
+}
 
 /*
 Place the gems in the storage containers, making sure that
