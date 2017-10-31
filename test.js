@@ -1,7 +1,7 @@
 
 
 
-const gemHeapSkope = () => {
+const gemHeapSkope = function () {
     const GemMine = {
         "Onyx": {
         "kilograms": 453
@@ -68,7 +68,7 @@ const processedGemDatabase = [
     }
 ]
 
-processedGemDatabase.forEach( gemObjectInDB => {
+processedGemDatabase.forEach(function (gemObjectInDB) {
     let mineral = gemObjectInDB.gem
     let currentResult;
     do {
@@ -76,10 +76,63 @@ processedGemDatabase.forEach( gemObjectInDB => {
         gemObjectInDB.processedGems.push(currentResult)
     } while (currentResult.amount === 5)
     
+    
+
     // while process for a specific mineral returns an 'amount' greater than zero, keep calling process 
     // on that mineral
 
 })
+
+;
+
+/*for (var i = 0; i < 30; i++) {
+    var container = {
+        id: i,
+        type: "Minerals",
+        orders: []
+    }
+    var containerTotal = 0
+    var shouldBreak = false
+    while (containerTotal < 565) {
+        if (currentGemIndex >= gemArray.length) {
+            shouldBreak = true
+            break
+        }
+        let result = SkopeManager.process(gemArray[currentGemIndex]);
+        if (result.amount < 5) {
+            currentGemIndex += 1;
+        } 
+        containerTotal += result.amount;
+        container.orders.push(result)
+    }
+    if (shouldBreak) {
+        break
+    }
+    containers.push(container);
+}
+console.log(containers);
+*/
+/*const processGems = function (gemToProcess) {
+    let processedGemArray = []
+    let processedGems = SkopeManager.process(gemToProcess)
+
+    do {
+        processedGemArray.push(processedGem)
+    } while (processedGems.amount > 0)
+
+    return processedGemArray
+}*/
+
+// const mineGem = SkopeManager.process
+// let currentOrder = mineGem("Onyx")
+
+// gemArray.forEach(function (gemName) {
+// do {
+//     processedOrders.push(currentOrder)
+//     mineGem(gemName)
+// } while (mineGem.amount > 0)
+// })
+
 
 /*
 Create a generator for 30 storage containers, which is how many a hëap-skope
@@ -108,10 +161,10 @@ let orderContainer = containerMaker.next().value
 
 const heapScopeContainers = []
 
-const fillContainers = () => {
+const fillContainers = function () {
     
-    processedGemDatabase.forEach (gemObjectfromDatabase => {
-        let processsedGemsArray = gemObjectfromDatabase.processedGems
+    for (i = 0; i < processedGemDatabase.length; i++) {
+        let processsedGemsArray = processedGemDatabase[i].processedGems
 
         do {
             let firstGemOrder = processsedGemsArray.shift()
@@ -124,11 +177,9 @@ const fillContainers = () => {
             orderContainer.remainingCapacity -= firstGemOrder.amount
             orderContainer.orders.push(firstGemOrder)
         } while (processsedGemsArray.length > 0)
-    })
+    }
 
     heapScopeContainers.push(orderContainer)
 }
 
 fillContainers()
-
-console.log(heapScopeContainers)
